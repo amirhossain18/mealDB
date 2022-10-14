@@ -10,7 +10,7 @@ const displayMeals = meals=> {
  const mailsContent= document.getElementById('mealsContainer')
  mailsContent.innerHTML='';
  meals.forEach(meal=>{
-  console.log(meal)
+  // console.log(meal)
    const mealDiv= document.createElement('div');
    mealDiv.classList.add('col')
    mealDiv.innerHTML=`
@@ -18,7 +18,8 @@ const displayMeals = meals=> {
             <img src="${meal.strMealThumb}" class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title">${meal.strMeal}</h5>
-              <p class="card-text">${meal.strInstructions.slice(0,200)}</p>
+         
+              <button onclick="loadMealDetails(${meal.idMeal})">Detail</button>
             </div>
           </div>
    `
@@ -33,6 +34,25 @@ const scerchFood=()=>{
   searchField= '';
 }
 
+const loadMealDetails=(mealid)=>{
+  const url= `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealid}`
+fetch(url)
+ .then(res=> res.json())
+ .then(data=> displayMealsDetails(data.meals[0]))
+}
 
-
-loadData ('a')
+const displayMealsDetails=(details)=>{
+console.log(details)
+const  detailsContainer= document.getElementById('detail-container')
+detailsContainer.innerHTML='';
+const mealDIv= document.createElement('div');
+mealDIv.classList.add('card');
+mealDIv.innerHTML=`
+<img class="card-img-top h-50" src="${details.strMealThumb}" alt="Card image cap">
+<div class="card-body">
+<p class="card-text">${details.strInstructions.slice(0,200)}</p>
+<a href=${details.strYoutube}> youTube</a>
+</div>`
+detailsContainer.appendChild(mealDIv)
+}
+loadData ('')
